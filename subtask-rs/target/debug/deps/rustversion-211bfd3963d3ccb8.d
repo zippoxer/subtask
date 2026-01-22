@@ -1,0 +1,20 @@
+/home/user/subtask_fork/subtask-rs/target/debug/deps/rustversion-211bfd3963d3ccb8.d: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/attr.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/bound.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/constfn.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/date.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expand.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expr.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/iter.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/release.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/time.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/token.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/version.rs /home/user/subtask_fork/subtask-rs/target/debug/build/rustversion-d70f972e4b4cf0c8/out/version.expr
+
+/home/user/subtask_fork/subtask-rs/target/debug/deps/librustversion-211bfd3963d3ccb8.so: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/attr.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/bound.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/constfn.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/date.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expand.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expr.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/iter.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/release.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/time.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/token.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/version.rs /home/user/subtask_fork/subtask-rs/target/debug/build/rustversion-d70f972e4b4cf0c8/out/version.expr
+
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/lib.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/attr.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/bound.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/constfn.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/date.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/error.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expand.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/expr.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/iter.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/release.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/time.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/token.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.22/src/version.rs:
+/home/user/subtask_fork/subtask-rs/target/debug/build/rustversion-d70f972e4b4cf0c8/out/version.expr:
+
+# env-dep:OUT_DIR=/home/user/subtask_fork/subtask-rs/target/debug/build/rustversion-d70f972e4b4cf0c8/out
