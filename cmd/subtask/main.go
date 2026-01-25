@@ -30,6 +30,7 @@ type CLI struct {
 	Diff      DiffCmd      `cmd:"" help:"Show task diff"`
 	Close     CloseCmd     `cmd:"" help:"Close a task and free workspace"`
 	Merge     MergeCmd     `cmd:"" help:"Merge task into base branch (marks as merged)"`
+	Queue     QueueCmd     `cmd:"" help:"Merge queue operations"`
 	Workspace WorkspaceCmd `cmd:"" help:"Print workspace path for a task"`
 	Review    ReviewCmd    `cmd:"" help:"Get review of task changes"`
 	Trace     LogsCmd      `cmd:"" help:"Debug worker runs (tool calls, errors)"`

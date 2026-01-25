@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const schemaVersion = 6
+const schemaVersion = 7
 
 func migrateSchema(ctx context.Context, db *sql.DB) error {
 	var v int
@@ -67,6 +67,13 @@ func migrateSchema(ctx context.Context, db *sql.DB) error {
 			return err
 		}
 		v = 6
+	}
+
+	if v == 6 {
+		if err := migrateToV7(ctx, tx); err != nil {
+			return err
+		}
+		v = 7
 	}
 
 	if _, err := tx.ExecContext(ctx, fmt.Sprintf("PRAGMA user_version=%d;", v)); err != nil {
@@ -251,5 +258,31 @@ func migrateToV6(ctx context.Context, tx *sql.Tx) error {
 	if _, err := tx.ExecContext(ctx, `UPDATE tasks SET worker_status = 'working' WHERE worker_status = 'running';`); err != nil {
 		return fmt.Errorf("migrate v6: %w", err)
 	}
+	return nil
+}
+
+func migrateToV7(ctx context.Context, tx *sql.Tx) error {
+	// Add priority column for merge queue ordering.
+	// Priority 1-5 (P1=critical, P5=low), default 3.
+	// Index uses ASC because lower numbers = higher priority.
+
+	// Add the priority column first.
+	if _, err := tx.ExecContext(ctx, `ALTER TABLE tasks ADD COLUMN priority INTEGER NOT NULL DEFAULT 3;`); err != nil {
+		// ALTER TABLE is not idempotent; ignore duplicate column errors.
+		if !strings.Contains(err.Error(), "duplicate column name") {
+			return fmt.Errorf("migrate v7: %w", err)
+		}
+	}
+
+	// Create index only if last_history_ns column exists (it should in real databases,
+	// but may not exist in minimal test schemas from earlier migration tests).
+	var hasColumn int
+	err := tx.QueryRowContext(ctx, `SELECT COUNT(*) FROM pragma_table_info('tasks') WHERE name='last_history_ns';`).Scan(&hasColumn)
+	if err == nil && hasColumn > 0 {
+		if _, err := tx.ExecContext(ctx, `CREATE INDEX IF NOT EXISTS tasks_priority_idx ON tasks(priority ASC, last_history_ns DESC);`); err != nil {
+			return fmt.Errorf("migrate v7: create index: %w", err)
+		}
+	}
+
 	return nil
 }

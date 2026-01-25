@@ -23,6 +23,7 @@ type DraftCmd struct {
 	Description string `arg:"" optional:"" help:"Task description (or use stdin)"`
 	Base        string `name:"base-branch" required:"" help:"Base branch"`
 	Title       string `required:"" help:"Short description"`
+	Priority    int    `default:"3" help:"Priority 1-5 (P1=critical, P5=low, default P3)"`
 	Model       string `help:"Default model for this task (overrides project config)"`
 	Reasoning   string `help:"Default reasoning for this task (codex-only; overrides project config)"`
 	Workflow    string `help:"Workflow template to use (e.g., collaborative)"`
@@ -65,6 +66,16 @@ func (c *DraftCmd) Run() error {
 	if err := workspace.ValidateReasoningLevel(c.Reasoning); err != nil {
 		return err
 	}
+
+	// Validate and normalize priority (0 means use default)
+	priority := c.Priority
+	if priority == 0 {
+		priority = task.DefaultPriority
+	}
+	if priority < 1 || priority > 5 {
+		return fmt.Errorf("priority must be 1-5 (P1=critical, P5=low), got %d", c.Priority)
+	}
+
 	t := &task.Task{
 		Name:        c.Task,
 		Title:       c.Title,
@@ -74,6 +85,7 @@ func (c *DraftCmd) Run() error {
 		Model:       c.Model,
 		Reasoning:   c.Reasoning,
 		Schema:      1,
+		Priority:    priority,
 	}
 
 	if err := t.Save(); err != nil {
@@ -103,6 +115,7 @@ func (c *DraftCmd) Run() error {
 		"base_branch": c.Base,
 		"workflow":    wf.Name,
 		"title":       c.Title,
+		"priority":    priority,
 		"follow_up":   c.FollowUp,
 		"model":       c.Model,
 		"reasoning":   c.Reasoning,
