@@ -15,6 +15,7 @@ type ListItem struct {
 	Title      string
 	FollowUp   string
 	BaseBranch string
+	Priority   int
 
 	TaskStatus   task.TaskStatus
 	WorkerStatus task.WorkerStatus
@@ -47,6 +48,7 @@ type Record struct {
 	TaskStatus   task.TaskStatus
 	WorkerStatus task.WorkerStatus
 	Stage        string
+	Priority     int
 
 	State        *task.State
 	ProgressMeta *task.Progress
@@ -71,7 +73,7 @@ func (i *Index) ListAll(ctx context.Context) ([]ListItem, error) {
 	}
 	const q = `
 SELECT
-	name, title, follow_up, base_branch,
+	name, title, follow_up, base_branch, priority,
 	task_status, worker_status, stage,
 	workspace, started_at_ns, last_error,
 	last_history_ns,
@@ -92,7 +94,7 @@ func (i *Index) ListOpen(ctx context.Context) ([]ListItem, error) {
 	}
 	const q = `
 SELECT
-	name, title, follow_up, base_branch,
+	name, title, follow_up, base_branch, priority,
 	task_status, worker_status, stage,
 	workspace, started_at_ns, last_error,
 	last_history_ns,
@@ -114,7 +116,7 @@ func (i *Index) ListClosed(ctx context.Context) ([]ListItem, error) {
 	}
 	const q = `
 SELECT
-	name, title, follow_up, base_branch,
+	name, title, follow_up, base_branch, priority,
 	task_status, worker_status, stage,
 	workspace, started_at_ns, last_error,
 	last_history_ns,
@@ -141,6 +143,7 @@ func (i *Index) queryList(ctx context.Context, q string) ([]ListItem, error) {
 	for rows.Next() {
 		var (
 			name, title, followUp, baseBranch string
+			priority                          int
 			taskStatus, workerStatus, stage   string
 			workspace                         string
 			startedAtNS                       int64
@@ -155,7 +158,7 @@ func (i *Index) queryList(ctx context.Context, q string) ([]ListItem, error) {
 			integratedReason                  sql.NullString
 		)
 		if err := rows.Scan(
-			&name, &title, &followUp, &baseBranch,
+			&name, &title, &followUp, &baseBranch, &priority,
 			&taskStatus, &workerStatus, &stage,
 			&workspace, &startedAtNS, &lastError,
 			&lastHistoryNS,
@@ -173,6 +176,7 @@ func (i *Index) queryList(ctx context.Context, q string) ([]ListItem, error) {
 			Title:             title,
 			FollowUp:          followUp,
 			BaseBranch:        baseBranch,
+			Priority:          priority,
 			TaskStatus:        task.TaskStatus(taskStatus),
 			WorkerStatus:      task.ParseWorkerStatus(workerStatus),
 			Stage:             stage,
@@ -210,7 +214,7 @@ func (i *Index) Get(ctx context.Context, taskName string) (Record, bool, error) 
 	const q = `
 SELECT
 	name, title, base_branch, follow_up, model, reasoning, description,
-	task_schema, task_status, worker_status, stage,
+	task_schema, priority, task_status, worker_status, stage,
 	workspace, started_at_ns, supervisor_pid, last_error,
 	last_history_ns,
 	tool_calls, last_active_ns,
@@ -226,6 +230,7 @@ WHERE name = ?;
 	var (
 		name, title, baseBranch, followUp, model, reasoning, description string
 		taskSchema                                                       int
+		priority                                                         int
 		taskStatus, workerStatus, stage                                  string
 		workspace                                                        string
 		startedAtNS                                                      int64
@@ -243,7 +248,7 @@ WHERE name = ?;
 
 	err := i.db.QueryRowContext(ctx, q, taskName).Scan(
 		&name, &title, &baseBranch, &followUp, &model, &reasoning, &description,
-		&taskSchema, &taskStatus, &workerStatus, &stage,
+		&taskSchema, &priority, &taskStatus, &workerStatus, &stage,
 		&workspace, &startedAtNS, &supervisorPID, &lastError,
 		&lastHistoryNS,
 		&toolCalls, &lastActiveNS,
@@ -270,10 +275,12 @@ WHERE name = ?;
 			Reasoning:   reasoning,
 			Schema:      taskSchema,
 			Description: description,
+			Priority:    priority,
 		},
 		TaskStatus:        task.TaskStatus(taskStatus),
 		WorkerStatus:      task.ParseWorkerStatus(workerStatus),
 		Stage:             stage,
+		Priority:          priority,
 		LastHistory:       timeFromNS(lastHistoryNS),
 		ProgressDone:      progressDone,
 		ProgressTotal:     progressTotal,

@@ -256,6 +256,7 @@ type taskRow struct {
 	reasoning   string
 	description string
 	taskSchema  int
+	priority    int
 
 	// Durable state (history.jsonl)
 	taskStatus      string
@@ -315,6 +316,7 @@ func buildRowFromDisk(taskName, filesSig string) (taskRow, bool, error) {
 	row.reasoning = t.Reasoning
 	row.description = t.Description
 	row.taskSchema = t.Schema
+	row.priority = t.EffectivePriority()
 
 	// Durable state from history.
 	tail, _ := history.Tail(taskName)
@@ -553,6 +555,7 @@ INSERT INTO tasks (
 	last_run_duration_ms,
 	progress_done, progress_total,
 	status_rank,
+	priority,
 	files_sig
 ) VALUES (
 	?, ?, ?, ?, ?, ?, ?, ?,
@@ -561,6 +564,7 @@ INSERT INTO tasks (
 	?, ?,
 	?,
 	?, ?,
+	?,
 	?,
 	?
 )
@@ -587,6 +591,7 @@ ON CONFLICT(name) DO UPDATE SET
 	progress_done=excluded.progress_done,
 	progress_total=excluded.progress_total,
 	status_rank=excluded.status_rank,
+	priority=excluded.priority,
 	files_sig=excluded.files_sig;
 `
 
@@ -607,6 +612,7 @@ ON CONFLICT(name) DO UPDATE SET
 			row.lastRunDuration,
 			row.progressDone, row.progressTotal,
 			row.statusRank,
+			row.priority,
 			row.filesSig,
 		); err != nil {
 			return fmt.Errorf("index refresh: upsert %q: %w", row.name, err)

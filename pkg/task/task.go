@@ -20,6 +20,7 @@ type Task struct {
 	Reasoning   string // Optional: override reasoning (codex-only) for this task
 	Schema      int    // Task schema version (0 if missing)
 	Description string // Optional task description/context (not the prompt)
+	Priority    int    // 1-5 (P1=critical, P5=low), default 3
 }
 
 // frontmatter is the YAML frontmatter in TASK.md.
@@ -30,6 +31,7 @@ type frontmatter struct {
 	FollowUp   string `yaml:"follow-up,omitempty"`
 	Model      string `yaml:"model,omitempty"`
 	Reasoning  string `yaml:"reasoning,omitempty"`
+	Priority   int    `yaml:"priority,omitempty"`
 }
 
 // Save writes the task to .subtask/tasks/<name>/TASK.md.
@@ -46,6 +48,7 @@ func (t *Task) Save() error {
 		FollowUp:   t.FollowUp,
 		Model:      t.Model,
 		Reasoning:  t.Reasoning,
+		Priority:   t.Priority,
 	}
 
 	var buf bytes.Buffer
@@ -105,6 +108,7 @@ func Load(name string) (*Task, error) {
 		Model:       fm.Model,
 		Reasoning:   fm.Reasoning,
 		Description: strings.TrimSpace(prompt),
+		Priority:    fm.Priority,
 	}, nil
 }
 
@@ -132,4 +136,15 @@ func List() ([]string, error) {
 // Path returns the TASK.md path for this task.
 func (t *Task) Path() string {
 	return Path(t.Name)
+}
+
+// DefaultPriority is the default priority for tasks (middle of 1-5 scale).
+const DefaultPriority = 3
+
+// EffectivePriority returns the task's priority, defaulting to 3 if not set.
+func (t *Task) EffectivePriority() int {
+	if t.Priority == 0 {
+		return DefaultPriority
+	}
+	return t.Priority
 }
