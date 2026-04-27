@@ -146,4 +146,4 @@ subtask update
 
 ## License
 
-MIT
+[MIT](LICENSE)
