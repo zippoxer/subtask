@@ -59,13 +59,13 @@ Run `subtask` in your terminal to see everything:
 #### Mac/Linux
 
 ```bash
-curl -fsSL https://subtask.dev/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zippoxer/subtask/main/scripts/install.sh | bash
 ```
 
 #### Windows (PowerShell)
 
 ```powershell
-irm https://subtask.dev/install.ps1 | iex
+irm https://raw.githubusercontent.com/zippoxer/subtask/main/scripts/install.ps1 | iex
 ```
 
 <details>
